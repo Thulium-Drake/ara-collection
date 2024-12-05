@@ -19,7 +19,7 @@
 - name: Ensure Podman Quadlet for Container
   containers.podman.podman_container:
     name: ara-api
-    image: "{{ ara_api_image }}"
+    image: "{{ ara_api_image }}:{{ ara_api_version }}"
     state: quadlet
     ports:
       - '127.0.0.1:8000:8000'
