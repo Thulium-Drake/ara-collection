@@ -39,7 +39,7 @@
 
 - name: Ensure service
   ansible.builtin.systemd:
-    name: ara-api-container.service
+    name: ara-api.service
     state: started
     enabled: true
     daemon_reload: true
