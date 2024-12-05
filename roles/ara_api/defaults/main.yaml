@@ -249,7 +249,11 @@ ara_api_time_zone: UTC
 # The following settings configure daily maintenance cronjobs
 ara_api_configure_cron: false
 
+# By default use the venv path for the ara client
+ara_api_cron_job_exec: "{{ ara_api_venv_path }}/bin/ara"
+
 # When configuring cronjobs, only provide the arguments for the ara CLI utility
+# If you want to configure jobs when using podman, use http://localhost:8000 as endpoint
 ara_api_cleanup_crons:
   - name: ara_api expire running playbooks
     arguments: 'expire --server http://localhost:8000 --client http --confirm --hours 24'
