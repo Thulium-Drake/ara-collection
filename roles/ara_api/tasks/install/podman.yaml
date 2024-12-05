@@ -17,6 +17,13 @@
     ara_api_log_dir: "/opt/ara/logs"
     ara_api_settings: "{{ ara_api_root_dir }}/settings.yaml"
 
+- name: Ensure Podman Quadlets directory
+  ansible.builtin.file:
+    path: /etc/containers/systemd
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
 - name: Ensure Podman Quadlets
   ansible.builtin.template:
     src: "podman/{{ ara_api_quadlet }}"
