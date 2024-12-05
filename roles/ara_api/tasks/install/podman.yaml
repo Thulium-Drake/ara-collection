@@ -11,11 +11,10 @@
       want to clean up that installation and migrate your data
   when: existing_pypi_install['stat']['exists']
 
-- name: Override file locations with path in container
-  ansible.builtin.set_fact:
-    ara_api_database_name: "/opt/ara/ansible.sqlite"
-    ara_api_log_dir: "/opt/ara/logs"
-    ara_api_settings: "{{ ara_api_root_dir }}/settings.yaml"
+- name: Ensure Podman Quadlet for Volume
+  containers.podman.podman_volume:
+    name: ara-api
+    state: quadlet
 
 - name: Ensure Podman Quadlet for Container
   containers.podman.podman_container:
@@ -25,13 +24,36 @@
     ports:
       - '127.0.0.1:8000:8000'
     volumes:
-      - "{{ ara_api_root_dir }}:/opt/ara{{ (ansible_facts['selinux']['status'] == 'enabled') | ternary(':Z', '') }}"
+      - "ara-api.volume:/opt/ara{{ (ansible_facts['selinux']['status'] == 'enabled') | ternary(':Z', '') }}"
     quadlet_options:
       - 'AutoUpdate=registry'
       - 'Pull=newer'
       - |
         [Install]
         WantedBy=default.target
+
+- name: Ensure Podman Quadlet for Volume
+  containers.podman.podman_volume_info:
+    name: ara-api
+  register: ara_api_podman_volume
+
+- name: Set ara_api_root dir with path from Volume
+  ansible.builtin.set_fact:
+    ara_api_root_dir: "{{ ara_api_podman_volume['volumes'][0]['Mountpoint'] }}"
+
+- name: Ensure directories in volume
+  ansible.builtin.file:
+    path: "{{ ara_api_root_dir }}/logs"
+    state: 'directory'
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Override file locations with path in container
+  ansible.builtin.set_fact:
+    ara_api_database_name: "/opt/ara/ansible.sqlite"
+    ara_api_log_dir: "/opt/ara/logs"
+    ara_api_settings: "{{ ara_api_root_dir }}/settings.yaml"
 
 - name: Ensure service
   ansible.builtin.systemd:
