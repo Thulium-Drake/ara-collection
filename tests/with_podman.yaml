@@ -15,10 +15,12 @@
     # Configure cleanup crons to exercise the code path during tests
     ara_api_configure_cron: true
   tasks:
-    - name: Install podman
+    - name: Install podman and crontab
       become: yes
       package:
-        name: podman
+        name:
+          - crontab
+          - podman
         state: present
 
     - name: Set up the API with the ara_api Ansible role
