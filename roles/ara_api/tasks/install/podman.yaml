@@ -27,6 +27,8 @@
   loop:
     - 'ara-api.container'
     - 'ara-api.volume'
+  loop_control:
+    loop_var: ara_api_quadlet
 
 - name: Ensure service
   ansible.builtin.systemd:
