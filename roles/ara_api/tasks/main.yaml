@@ -25,6 +25,7 @@
 
 - name: Ensure pre-requirements for running are met
   include_tasks: pre-requirements.yaml
+  when: ara_api_install_method != 'podman'
 
 - name: Include installation of ARA
   include_tasks: "install/{{ ara_api_install_method }}.yaml"

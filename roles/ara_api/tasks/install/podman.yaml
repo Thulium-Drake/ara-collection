@@ -32,22 +32,21 @@
         [Install]
         WantedBy=default.target
 
-- name: Ensure Podman Quadlet for Volume
+- name: Ensure service
+  ansible.builtin.systemd:
+    name: ara-api.service
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Collect Podman Volume information
   containers.podman.podman_volume_info:
     name: ara-api
   register: ara_api_podman_volume
 
-- name: Set ara_api_root dir with path from Volume
+- name: Set ara_api_root dir with path from Podman Volume
   ansible.builtin.set_fact:
     ara_api_root_dir: "{{ ara_api_podman_volume['volumes'][0]['Mountpoint'] }}"
-
-- name: Ensure directories in volume
-  ansible.builtin.file:
-    path: "{{ ara_api_root_dir }}/logs"
-    state: 'directory'
-    owner: root
-    group: root
-    mode: '0755'
 
 - name: Override file locations with path in container
   ansible.builtin.set_fact:
@@ -55,9 +54,10 @@
     ara_api_log_dir: "/opt/ara/logs"
     ara_api_settings: "{{ ara_api_root_dir }}/settings.yaml"
 
-- name: Ensure service
-  ansible.builtin.systemd:
-    name: ara-api.service
-    state: started
-    enabled: true
-    daemon_reload: true
+- name: Ensure directories in Podman Volume
+  ansible.builtin.file:
+    path: "{{ ara_api_root_dir }}/logs"
+    state: 'directory'
+    owner: root
+    group: root
+    mode: '0755'
