@@ -17,11 +17,20 @@
     ara_api_log_dir: "/opt/ara/logs"
     ara_api_settings: "{{ ara_api_root_dir }}/settings.yaml"
 
-# TODO: Insert podman quadlet magic here
+- name: Ensure Podman Quadlets
+  ansible.builtin.template:
+    src: "{{ ara_api_quadlet }}"
+    dest: "/etc/containers/systemd/{{ ara_api_quadlet }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop:
+    - 'ara-api.container'
+    - 'ara-api.volume'
 
 - name: Ensure service
   ansible.builtin.systemd:
-    name: ara-api.service
+    name: ara-api-container.service
     state: started
     enabled: true
     daemon_reload: true
