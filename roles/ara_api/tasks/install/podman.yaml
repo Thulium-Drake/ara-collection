@@ -19,7 +19,7 @@
 
 - name: Ensure Podman Quadlets
   ansible.builtin.template:
-    src: "{{ ara_api_quadlet }}"
+    src: "podman/{{ ara_api_quadlet }}"
     dest: "/etc/containers/systemd/{{ ara_api_quadlet }}"
     owner: 'root'
     group: 'root'
