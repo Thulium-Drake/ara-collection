@@ -38,6 +38,7 @@
       - name: github.com/ansible/ansible
         override-checkout: stable-2.16
     pre-run: tests/zuul_pre_multinode_networking.yaml
+    ansible_version: 10
 
 - job:
     name: ara-role-api-postgresql
@@ -50,6 +51,7 @@
       ARA API clients as well as the API itself.
     run: tests/with_postgresql.yaml
     post-run: tests/zuul_post_with_postgresql.yaml
+    ansible_version: 10
 
 - job:
     name: ara-role-api-mysql
@@ -62,6 +64,7 @@
       ARA API clients as well as the API itself.
     run: tests/with_mysql.yaml
     post-run: tests/zuul_post_with_mysql.yaml
+    ansible_version: 10
 
 - job:
     name: ara-role-api-distributed-sqlite
@@ -71,6 +74,7 @@
       Deploys the ARA API server on Fedora 39 as well as CentOS Stream 8/9
       and tests it using the distributed sqlite database backend.
     run: tests/with_distributed_sqlite.yaml
+    ansible_version: 10
 
 - job:
     name: ara-role-api-gunicorn-nginx
@@ -84,6 +88,7 @@
       ARA Ansible plugins, the ARA API clients as well as the API itself with
       authentication enabled.
     run: tests/with_nginx.yaml
+    ansible_version: 10
 
 - job:
     name: ara-role-api-gunicorn-nginx-client-cert
@@ -97,6 +102,7 @@
       ARA Ansible plugins, the ARA API clients as well as the API itself with
       authentication enabled.
     run: tests/with_client_cert.yaml
+    ansible_version: 10
 
 - job:
     name: ara-role-api-podman
@@ -106,6 +112,7 @@
       Desploys the ARA API server on Fedora 39 as well as CentOS Stream 8/9
       in a Podman container and tests it using the default sqlite database backend.
     run: tests/with_podman.yaml
+    ansible_version: 10
 
 # TODO: The job should build a package from current source and test that package
 # instead of the package in the stable distribution.
@@ -117,3 +124,4 @@
       Deploys the ARA API server on Fedora 36 using distribution packages for
       ARA and Ansible.
     run: tests/with_fedora_packages.yaml
+    ansible_version: 10
