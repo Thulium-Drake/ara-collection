@@ -19,7 +19,7 @@
       become: yes
       package:
         name:
-          - crontab
+          - cronie
           - podman
         state: present
 
