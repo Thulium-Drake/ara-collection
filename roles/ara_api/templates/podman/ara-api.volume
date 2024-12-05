@@ -1,5 +1,0 @@
-# {{ ansible_managed }}
-[Unit]
-Description=ARA-API Container Volume
-
-[Volume]

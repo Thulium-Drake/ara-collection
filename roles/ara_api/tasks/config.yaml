@@ -50,6 +50,7 @@
       shell: |
         set -o pipefail
         tr -dc A-Za-z0-9 </dev/urandom | head -c 50 ; echo ''
+      register: generated_key
 
     - name: Set ara_api_secret_key
       set_fact:

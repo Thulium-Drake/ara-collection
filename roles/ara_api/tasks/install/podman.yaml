@@ -17,25 +17,21 @@
     ara_api_log_dir: "/opt/ara/logs"
     ara_api_settings: "{{ ara_api_root_dir }}/settings.yaml"
 
-- name: Ensure Podman Quadlets directory
-  ansible.builtin.file:
-    path: /etc/containers/systemd
-    owner: 'root'
-    group: 'root'
-    mode: '0755'
-
-- name: Ensure Podman Quadlets
-  ansible.builtin.template:
-    src: "podman/{{ ara_api_quadlet }}"
-    dest: "/etc/containers/systemd/{{ ara_api_quadlet }}"
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
-  loop:
-    - 'ara-api.container'
-    - 'ara-api.volume'
-  loop_control:
-    loop_var: ara_api_quadlet
+- name: Ensure Podman Quadlet for Container
+  containers.podman.podman_container:
+    name: ara-api
+    image: "{{ ara_api_image }}"
+    state: quadlet
+    ports:
+      - '127.0.0.1:8000:8000'
+    volumes:
+      - "{{ ara_api_root_dir }}:/opt/ara{{ (ansible_facts['selinux']['status'] == 'enabled') | ternary(':Z', '') }}"
+    quadlet_options:
+      - 'AutoUpdate=registry'
+      - 'Pull=newer'
+      - |
+        [Install]
+        WantedBy=default.target
 
 - name: Ensure service
   ansible.builtin.systemd:
