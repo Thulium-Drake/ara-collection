@@ -48,7 +48,7 @@
   ansible.builtin.set_fact:
     ara_api_root_dir: "{{ ara_api_podman_volume['volumes'][0]['Mountpoint'] }}"
 
-- name: Override file locations with path in container
+- name: Override file locations with paths for/in Podman Container
   ansible.builtin.set_fact:
     ara_api_database_name: "/opt/ara/ansible.sqlite"
     ara_api_log_dir: "/opt/ara/logs"
