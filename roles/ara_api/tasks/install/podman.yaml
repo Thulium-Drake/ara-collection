@@ -38,6 +38,7 @@
     state: started
     enabled: true
     daemon_reload: true
+    scope: "{{ (ansible_facts['effective_user_id'] > 0) | ternary('user', 'system', 'system') }}"
 
 - name: Collect Podman Volume information
   containers.podman.podman_volume_info:
@@ -58,6 +59,6 @@
   ansible.builtin.file:
     path: "{{ ara_api_root_dir }}/logs"
     state: 'directory'
-    owner: root
-    group: root
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     mode: '0755'
