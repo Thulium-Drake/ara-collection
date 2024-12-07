@@ -28,6 +28,10 @@
         name: ara_api
         public: yes
 
+    - name: Install ara[client] via pip to allow for tests
+      pip:
+        name: ara[client]
+
     # These are tasks rather than a standalone playbook to give us an easy
     # access to all the variables within the same play.
     - include_tasks: test_tasks.yaml
