@@ -76,6 +76,11 @@
   include_tasks: zuul_metadata.yaml
   when: zuul is defined
 
+- name: Ensure target directory present
+  file:
+    path: "{{ ara_api_root_dir }}/server/"
+    state: directory
+
 - name: Template an ansible.cfg file
   copy:
     content: |
