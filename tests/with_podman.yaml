@@ -32,6 +32,14 @@
       pip:
         name: ara[client]
 
+    # Despite installing from packages, we need access to the source for
+    # running tests
+    - name: Prepare git repository for ara
+      git:
+        repo: "{{ ara_api_source }}"
+        dest: "{{ ara_api_source_checkout }}"
+        version: "{{ (ara_api_version == 'latest') | ternary('HEAD', ara_api_version) }}"
+
     # These are tasks rather than a standalone playbook to give us an easy
     # access to all the variables within the same play.
     - include_tasks: test_tasks.yaml
