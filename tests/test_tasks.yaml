@@ -63,7 +63,7 @@
   package:
     name: ansible
     state: present
-  when: ara_api_install_method == "distribution"
+  when: ara_api_install_method == "distribution" or  ara_api_install_method == "podman"
 
 - name: Get ARA plugins directory
   environment:
