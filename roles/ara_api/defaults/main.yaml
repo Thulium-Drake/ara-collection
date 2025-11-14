@@ -102,6 +102,7 @@ ara_api_wsgi_server: null
 # Address and port on which the wsgi server will bind
 # Changing this value means you might need to adjust "ara_api_allowed_hosts" and
 # "ara_api_cors_origin_whitelist".
+# This value is also used when installing via Podman as the listen uri
 ara_api_wsgi_bind: "127.0.0.1:8000"
 
 # Amount of worker processes for the wsgi server
